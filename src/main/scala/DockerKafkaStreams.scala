@@ -14,16 +14,16 @@ object DockerKafkaStreams extends App {
 
   val source: KStream[String, String] = builder.stream[String, String]("input")
 
-  val solution = source.groupBy((_, value) => value).count.toStream
-
   source.to("output")
 
   val topology = builder.build()
   println(topology.describe())
 
+  val bootstrapServers = sys.env.getOrElse("ANJA_BOOTSTRAP_SERVERS", ":9092")
+
   val props = new Properties()
   props.put(StreamsConfig.APPLICATION_ID_CONFIG, "stream-dockerized-app")
-  props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "broker:29092")
+  props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers)
   props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String.getClass)
   props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String.getClass)
 

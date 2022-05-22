@@ -21,4 +21,4 @@ Dockerized Kafka Streams application using Docker Compose.
     - Navigate to: `Topics > output > Messages` and produce message from here. The output will be available on your
       Consumer terminal.
 
-This project includes GitHub Actions.
+This project includes GitHub Actions exercise.

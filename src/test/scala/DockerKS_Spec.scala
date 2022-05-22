@@ -5,10 +5,21 @@ import org.apache.kafka.streams.scala.StreamsBuilder
 import org.apache.kafka.streams.scala.ImplicitConversions._
 import org.apache.kafka.streams.scala.serialization.Serdes._
 import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 
 class DockerKS_Spec extends AnyFlatSpec with KafkaTestSetup {
 
-  def testShouldCountWords(): Unit = {
+  private def getStreamsConfiguration: Properties = {
+    val streamsConfiguration: Properties = new Properties()
+
+    streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "word-count-test")
+    streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, ":9092")
+    streamsConfiguration.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, "10000")
+    streamsConfiguration.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest")
+    streamsConfiguration
+  }
+
+  def testCountWords(): Unit = {
     val streamsConfiguration = getStreamsConfiguration
     val builder = new StreamsBuilder
     val lines = builder.stream[String, String](inputTopic)
@@ -26,19 +37,15 @@ class DockerKS_Spec extends AnyFlatSpec with KafkaTestSetup {
     streams.start()
 
     streams.close()
-
-    "testShouldCountWords" should "count words" in {
-      expectedWordCounts.sortBy(_.key)
-    }
   }
 
-  private def getStreamsConfiguration: Properties = {
-    val streamsConfiguration: Properties = new Properties()
+  it should "sort list by key" in {
+    expectedWordCounts.sortBy(_.key)
+  }
 
-    streamsConfiguration.put(StreamsConfig.APPLICATION_ID_CONFIG, "word-count-test")
-    streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, ":9092")
-    streamsConfiguration.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, "10000")
-    streamsConfiguration.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest")
-    streamsConfiguration
+  it should "count occurrences of words in list" in {
+    val expected = expectedWordCounts.map(_.value)
+    val actual = expectedWordCounts.map(_.key.mkString("").split(" ").length)
+    expected shouldBe actual
   }
 }

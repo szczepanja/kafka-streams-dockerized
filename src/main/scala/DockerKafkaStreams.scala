@@ -11,14 +11,17 @@ object DockerKafkaStreams extends App {
 
   val builder = new StreamsBuilder
 
-  val lines = builder.stream[String, String]("input")
+  val inputTopic = "input"
+  val lines = builder.stream[String, String](inputTopic)
 
   val wordCounts = lines
     .flatMapValues(textLine => textLine.split("\\W+"))
-    .groupBy((key, word) => word)
+    .groupBy((_, word) => word)
     .count
     .mapValues(_.toString)
-  wordCounts.toStream.to("output")
+
+  val outputTopic = "output"
+  wordCounts.toStream.to(outputTopic)
 
   val topology = builder.build()
 

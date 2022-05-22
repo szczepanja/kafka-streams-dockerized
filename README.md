@@ -16,7 +16,9 @@ Dockerized Kafka Streams application using Docker Compose.
    `docker-compose exec broker kafka-console-consumer --topic count-topic --from-beginning --bootstrap-server localhost:9092`
     - Now produce message from Producer to Consumer and wait for the event in Consumer terminal
 
-5. You can also check out the Confluent Control Center on [localhost:9021](http://localhost:9021/) 
+5. You can also check out the Confluent Control Center on [localhost:9021](http://localhost:9021/)
 
-   - Navigate to: `Topics > output > Messages` and produce message from here. The output will be available on your Consumer
-     terminal.
+    - Navigate to: `Topics > output > Messages` and produce message from here. The output will be available on your
+      Consumer terminal.
+
+This project includes GitHub Actions.

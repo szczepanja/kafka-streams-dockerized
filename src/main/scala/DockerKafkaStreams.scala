@@ -25,6 +25,7 @@ object DockerKafkaStreams extends App {
 
   val topology = builder.build()
 
+
   val bootstrapServers = sys.env.getOrElse("ANJA_BOOTSTRAP_SERVERS", ":9092")
   val appIdConfig = sys.env.getOrElse("APP_ID", "stream-dockerized-app")
 

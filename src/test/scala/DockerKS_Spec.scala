@@ -25,7 +25,7 @@ class DockerKS_Spec extends AnyFlatSpec with KafkaTestSetup {
     val lines = builder.stream[String, String](inputTopic)
 
     val wordCounts = lines
-      .flatMapValues(textLine => textLine.split("\\W+"))
+      .flatMapValues(_.split("\\W+"))
       .groupBy((_, word) => word)
       .count
       .mapValues(_.toString)

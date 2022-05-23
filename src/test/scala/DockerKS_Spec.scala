@@ -39,11 +39,15 @@ class DockerKS_Spec extends AnyFlatSpec with KafkaTestSetup {
     streams.close()
   }
 
+  it should "run stream with success and close it" in {
+    testCountWords()
+  }
+
   it should "sort list by key" in {
     expectedWordCounts.sortBy(_.key)
   }
 
-  it should "count occurrences of words in list" in {
+  it should "check if number of words is the same as value in list" in {
     val expected = expectedWordCounts.map(_.value)
     val actual = expectedWordCounts.map(_.key.mkString("").split(" ").length)
     expected shouldBe actual

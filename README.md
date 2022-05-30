@@ -5,7 +5,7 @@ Dockerized Kafka Streams application using Docker Compose.
 ## How to run?
 
 1. Run `sbt docker`
-2. Open you favourite terminal in master branch of this project and run `docker compose up -d` (-d stands for **
+2. Open terminal in master branch of this project and run `docker compose up -d` (-d stands for **
    detached** mode).
 3. Run Kafka Console Producer using this command:
 
